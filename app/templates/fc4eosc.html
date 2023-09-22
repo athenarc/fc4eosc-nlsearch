@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% set active_page = "fc4eosc" %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+{{ super() }}
+
+{% endblock %}
+
+
+{% block page_content %}
+
+<h1>FC4EOSC NL Search</h1>
+<p class="lead">Search over the RD Graph with Natural Language</p>
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col">
+            <form method="post" id="nlq_form" class="lead needs-validation" novalidate>
+                <div class="input-group mb-3">
+                    <textarea class="form-control" id="questionArea" name="question" form="nlq_form" rows="3"
+                        required>{{ question }}</textarea>
+
+                    <div class="btn-group-vertical">
+                        <button type="submit" class="btn btn-primary fw-bold ">Search</button>
+                    </div>
+
+                    <div class="invalid-feedback">
+                        Please give a NL Question.
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{results|safe}}
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped bg-light">
+                {% for i in range(0, sql_preds|length) %}
+                <tr>
+                    <th scope="row">{{ i+1 }}</th>
+                    <td>
+                        {{ sql_preds[i] }}
+                    </td>
+                    <td>
+                        {% if execution_results[i] == 'success' %}
+                            <i class="bi bi-check-circle"></i>
+                        {% elif execution_results[i] == 'fail' %}
+                            <i class="bi bi-x-circle"></i>
+                        {% elif execution_results[i] == 'unknown' %}
+                            <i class="bi bi-question-circle"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}
