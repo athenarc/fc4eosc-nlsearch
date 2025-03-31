@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% set active_page = "fc4eosc" %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+{{ super() }}
+
+<script>
+    function insert_example(example_id) {
+        var examples = {
+            "example_1": {
+                "question": "How many authors are there?"
+            },
+            "example_2": {
+                "question": "Show all info on authors named John"
+            },
+            "example_3": {
+                "question": "Show the full names of authors with more than 10 publications"
+            },
+        };
+        document.getElementById('questionArea').value = examples[example_id]["question"];
+    }
+
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+{% endblock %}
+
+
+{% block page_content %}
+
+<h1>FC4EOSC NL Search</h1>
+<p class="lead">Search over the RD Graph with Natural Language</p>
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col">
+            <form method="post" id="nlq_form" class="lead needs-validation" novalidate>
+                <div class="input-group mb-3">
+                    <textarea class="form-control" id="questionArea" name="question" form="nlq_form" rows="3"
+                        required>{{ question }}</textarea>
+
+                    <div class="btn-group-vertical">
+                        <button type="submit" class="btn btn-primary fw-bold ">Search</button>
+
+                        <button class="btn btn-secondary text-white dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Examples</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick='insert_example("example_1")'>Number of authors</a>
+                            <a class="dropdown-item" onclick='insert_example("example_2")'>Authors named John</a>
+                            <a class="dropdown-item" onclick='insert_example("example_3")'>Authors with 10 publications</a>
+                        </div>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please give a NL Question or load an example.
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{results|safe}}
+
+    <div class="accordion">
+
+        {% if predicted_sql != None %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Predicted SQL Query
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse">
+                <div class="accordion-body bg-light text-dark">
+                    {{ predicted_sql }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if sql_candidates != None %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    SQL Query Candidates
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse">
+                <div class="accordion-body" style="padding: 0;">
+                    <!-- SQL Query candidates -->
+                    <table class="table table-striped bg-light" style="margin: 0;">
+                        {% for i in range(0, sql_candidates|length) %}
+                        <tr>
+                            <th scope="row">{{ i+1 }}</th>
+                            <td>
+                                {{ sql_candidates[i] }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}

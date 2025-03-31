@@ -1,0 +1,320 @@
+{
+    "tables": [
+        "activity_types",
+        "countries",
+        "ec_framework_programs",
+        "erc_panels",
+        "erc_research_domains",
+        "eu_territorial_units",
+        "funding_schemes",
+        "institutions",
+        "people",
+        "programmes",
+        "project_erc_panels",
+        "project_member_roles",
+        "project_members",
+        "project_programmes",
+        "project_subject_areas",
+        "project_topics",
+        "projects",
+        "subject_areas",
+        "topics"
+    ],
+    "columns": [
+        "activity_types.code",
+        "activity_types.description",
+        "countries.unics_id",
+        "countries.name",
+        "countries.alpha_2",
+        "countries.alpha_3",
+        "countries.nuts_0",
+        "ec_framework_programs.name",
+        "erc_panels.code",
+        "erc_panels.description",
+        "erc_panels.part_of",
+        "erc_research_domains.code",
+        "erc_research_domains.description",
+        "eu_territorial_units.nuts_code",
+        "eu_territorial_units.description",
+        "eu_territorial_units.nuts_level",
+        "eu_territorial_units.nuts_version",
+        "funding_schemes.code",
+        "funding_schemes.title",
+        "institutions.unics_id",
+        "institutions.country_id",
+        "institutions.name",
+        "institutions.nuts3_code",
+        "institutions.db_pedia_url",
+        "institutions.wikidata_url",
+        "institutions.grid_id",
+        "institutions.acronym",
+        "institutions.short_name",
+        "institutions.website",
+        "people.unics_id",
+        "people.full_name",
+        "programmes.code",
+        "programmes.rcn",
+        "programmes.title",
+        "programmes.short_name",
+        "programmes.parent",
+        "project_erc_panels.project",
+        "project_erc_panels.panel",
+        "project_member_roles.code",
+        "project_member_roles.description",
+        "project_members.unics_id",
+        "project_members.project",
+        "project_members.pic_number",
+        "project_members.rcn",
+        "project_members.member_name",
+        "project_members.activity_type",
+        "project_members.country",
+        "project_members.street",
+        "project_members.city",
+        "project_members.postal_code",
+        "project_members.ec_contribution",
+        "project_members.institution_id",
+        "project_members.member_role",
+        "project_members.nuts3_code",
+        "project_members.member_short_name",
+        "project_members.department_name",
+        "project_members.vat_number",
+        "project_members.latitude",
+        "project_members.longitude",
+        "project_programmes.project",
+        "project_programmes.programme",
+        "project_subject_areas.project",
+        "project_subject_areas.subject_area",
+        "project_topics.project",
+        "project_topics.topic",
+        "projects.unics_id",
+        "projects.acronym",
+        "projects.title",
+        "projects.ec_call",
+        "projects.ec_fund_scheme",
+        "projects.cordis_ref",
+        "projects.ec_ref",
+        "projects.start_date",
+        "projects.end_date",
+        "projects.start_year",
+        "projects.end_year",
+        "projects.homepage",
+        "projects.total_cost",
+        "projects.ec_max_contribution",
+        "projects.framework_program",
+        "projects.objective",
+        "projects.principal_investigator",
+        "subject_areas.code",
+        "subject_areas.title",
+        "subject_areas.description",
+        "topics.code",
+        "topics.rcn",
+        "topics.title"
+    ],
+    "table": {
+        "activity_types": [
+            0,
+            1
+        ],
+        "countries": [
+            2,
+            3,
+            4,
+            5,
+            6
+        ],
+        "ec_framework_programs": [
+            7
+        ],
+        "erc_panels": [
+            8,
+            9,
+            10
+        ],
+        "erc_research_domains": [
+            11,
+            12
+        ],
+        "eu_territorial_units": [
+            13,
+            14,
+            15,
+            16
+        ],
+        "funding_schemes": [
+            17,
+            18
+        ],
+        "institutions": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28
+        ],
+        "people": [
+            29,
+            30
+        ],
+        "programmes": [
+            31,
+            32,
+            33,
+            34,
+            35
+        ],
+        "project_erc_panels": [
+            36,
+            37
+        ],
+        "project_member_roles": [
+            38,
+            39
+        ],
+        "project_members": [
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58
+        ],
+        "project_programmes": [
+            59,
+            60
+        ],
+        "project_subject_areas": [
+            61,
+            62
+        ],
+        "project_topics": [
+            63,
+            64
+        ],
+        "projects": [
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81
+        ],
+        "subject_areas": [
+            82,
+            83,
+            84
+        ],
+        "topics": [
+            85,
+            86,
+            87
+        ]
+    },
+    "joins": {
+        "erc_panels": {
+            "erc_research_domains": "erc_panels.part_of=erc_research_domains.code",
+            "project_erc_panels": "project_erc_panels.panel=erc_panels.code"
+        },
+        "erc_research_domains": {
+            "erc_panels": "erc_panels.part_of=erc_research_domains.code"
+        },
+        "institutions": {
+            "countries": "institutions.country_id=countries.unics_id",
+            "eu_territorial_units": "institutions.nuts3_code=eu_territorial_units.nuts_code",
+            "project_members": "project_members.institution_id=institutions.unics_id"
+        },
+        "countries": {
+            "institutions": "institutions.country_id=countries.unics_id"
+        },
+        "eu_territorial_units": {
+            "institutions": "institutions.nuts3_code=eu_territorial_units.nuts_code",
+            "project_members": "project_members.nuts3_code=eu_territorial_units.nuts_code"
+        },
+        "programmes": {
+            "programmes": "programmes.parent=programmes.code AND programmes.parent=programmes.code",
+            "project_programmes": "project_programmes.programme=programmes.code"
+        },
+        "project_erc_panels": {
+            "erc_panels": "project_erc_panels.panel=erc_panels.code",
+            "projects": "project_erc_panels.project=projects.unics_id"
+        },
+        "projects": {
+            "project_erc_panels": "project_erc_panels.project=projects.unics_id",
+            "project_members": "project_members.project=projects.unics_id",
+            "project_programmes": "project_programmes.project=projects.unics_id",
+            "project_subject_areas": "project_subject_areas.project=projects.unics_id",
+            "project_topics": "project_topics.project=projects.unics_id",
+            "funding_schemes": "projects.ec_fund_scheme=funding_schemes.code",
+            "ec_framework_programs": "projects.framework_program=ec_framework_programs.name",
+            "people": "projects.principal_investigator=people.unics_id"
+        },
+        "project_members": {
+            "activity_types": "project_members.activity_type=activity_types.code",
+            "institutions": "project_members.institution_id=institutions.unics_id",
+            "project_member_roles": "project_members.member_role=project_member_roles.code",
+            "eu_territorial_units": "project_members.nuts3_code=eu_territorial_units.nuts_code",
+            "projects": "project_members.project=projects.unics_id"
+        },
+        "activity_types": {
+            "project_members": "project_members.activity_type=activity_types.code"
+        },
+        "project_member_roles": {
+            "project_members": "project_members.member_role=project_member_roles.code"
+        },
+        "project_programmes": {
+            "programmes": "project_programmes.programme=programmes.code",
+            "projects": "project_programmes.project=projects.unics_id"
+        },
+        "project_subject_areas": {
+            "projects": "project_subject_areas.project=projects.unics_id",
+            "subject_areas": "project_subject_areas.subject_area=subject_areas.code"
+        },
+        "subject_areas": {
+            "project_subject_areas": "project_subject_areas.subject_area=subject_areas.code"
+        },
+        "project_topics": {
+            "projects": "project_topics.project=projects.unics_id",
+            "topics": "project_topics.topic=topics.code"
+        },
+        "topics": {
+            "project_topics": "project_topics.topic=topics.code"
+        },
+        "funding_schemes": {
+            "projects": "projects.ec_fund_scheme=funding_schemes.code"
+        },
+        "ec_framework_programs": {
+            "projects": "projects.framework_program=ec_framework_programs.name"
+        },
+        "people": {
+            "projects": "projects.principal_investigator=people.unics_id"
+        }
+    }
+}

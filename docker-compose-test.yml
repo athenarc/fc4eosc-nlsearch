@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    pull_policy: build
+    container_name: nl_search
+    restart: unless-stopped
+    networks:
+      - traefik # join the traefik network
+    environment:
+      - GUNICORN_CMD_ARGS="--workers=1"
+    volumes:
+      - /data/ci/katso/trained-models:/trained-models
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nl_search.rule= Host(`test.darelab.athenarc.gr`) && PathPrefix(`/nl_search`)
+      - traefik.http.routers.nl_search.middlewares=redirect_to_https@file
+
+networks:
+  traefik:
+    name: traefik
+    external: true

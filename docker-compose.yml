@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  api_nl_search:
+    image: darelab-pull.docker.imsi.athenarc.gr/katso/api_nl_search
+    networks:
+      - traefik
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api_nl_search.rule=Host(`darelab.imsi.athenarc.gr`, `darelab.athenarc.gr`) && PathPrefix(`/nl_search`)
+      - traefik.http.routers.api_nl_search.middlewares=redirect_to_https@file
+    environment:
+    - GUNICORN_CMD_ARGS="--workers=1"
+    volumes:
+      - /data/ci/katso/trained-models:/trained-models
+
+
+networks:
+  traefik:
+    name: traefik
+    external: true

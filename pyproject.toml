@@ -1,0 +1,63 @@
+[build-system]
+requires = [ "poetry-core>=1.0.0",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "api_nl_search"
+version = "0.1.0"
+description = ""
+authors = []
+license = ""
+packages = [
+    {include = "darelabdb/api_nl_search", from = "../../bases"},
+    {include = "darelabdb/nlp_data_processing", from = "../../components"},
+    {include = "darelabdb/nlp_experiment_runner", from = "../../components"},
+    {include = "darelabdb/nlp_metrics", from = "../../components"},
+    {include = "darelabdb/nlp_models", from = "../../components"},
+    {include = "darelabdb/nlp_sql_to_text", from = "../../components"},
+    {include = "darelabdb/nlp_text_to_sql",from = "../../components"},
+    {include = "darelabdb/utils_query_analyzer",from = "../../components"},
+    {include = "darelabdb/utils_datasets",from = "../../components"},
+    {include = "darelabdb/nlp_sql_to_text",from = "../../components"},
+    {include = "darelabdb/utils_database_connector",from = "../../components"},
+    {include = "darelabdb/utils_configs",from = "../../components"},
+    {include = "darelabdb/nlp_text_to_sql_llm",from = "../../components"},
+    {include = "darelabdb/nlp_embeddings",from = "../../components"},
+]
+
+[tool.poetry.dependencies]
+lightning = "^2.3.3"
+sqlparse = "^0.5.1"
+torchmetrics = "^1.2.0"
+loguru = "^0.7.2"
+requests = "^2.31.0"
+pandas = "^2.1.2"
+pydantic = "^2.4.2"
+sql-metadata = "^2.9.0"
+pglast = "^6.0"
+fastapi = "^0.104.1"
+python = ">=3.9, <3.13, !=3.9.7"
+nltk = "^3.8.1"
+python-multipart = "^0.0.6"
+torch = {version = "^2.2.0+cpu", source = "pytorch"}
+transformers = {extras = ["torch"], version = "^4.37.2"}
+sentence-transformers = "^2.2.2"
+mo-sql-parsing = "8.237.22316"
+sqlglot = "^20.11.0"
+thefuzz = "^0.22.1"
+wandb = "^0.16.1"
+peft = "^0.10.0"
+psycopg2-binary = "^2.9.9"
+pymysql = "^1.1.0"
+pydantic-settings = "^2.1.0"
+sqlalchemy = "^2.0.27"
+
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[tool.poetry.dependencies.uvicorn]
+extras = [ "standard",]
+version = "^0.24.0.post1"

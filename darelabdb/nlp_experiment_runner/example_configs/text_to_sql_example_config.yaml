@@ -1,0 +1,82 @@
+mode: "training"
+
+model:
+  load_from_checkpoint: False
+  model_class: "Seq2SeqText2SqlModel"
+  args:
+    model_name_or_path: "t5-small"
+    decoder_only: True
+    learning_rate: 0.00005
+    optimizer: "adamw"
+    max_output_length: 512
+
+processors:
+
+  preprocessor:
+
+    input_steps:
+      - name: serialize_schema
+        args:
+          with_db_id: True
+      - name: text_assemble
+        args:
+          recipe: "{{datapoint.nl_query}} | {{datapoint.serialized_schema}}"
+          dest_field: "model_input"
+
+    output_steps:
+      - name: text_assemble
+        args:
+          recipe: "{{datapoint.db_id}} | {{datapoint.sql_query}}"
+          dest_field: "expected_output"
+
+  postprocessor:
+    input_steps:
+      - name: remove_db_id
+        args:
+          separator: "|"
+
+# TODO more than one datasets??
+data_module:
+  dataset: 
+    name: "Spider"
+    args: {}
+  args:
+    batch_size: 4
+    shuffle: True
+    max_length: 512
+    eager: True
+
+
+
+training_parameters:
+  max_epochs: 20
+  log_every_n_steps: 5
+  accumulate_grad_batches: 1
+  accelerator: "gpu"
+  devices: 2
+  strategy: "fsdp"
+  precision: "bf16"
+
+  # The experiment name will be used in the logger and for the directory in which the checkpoints will be stored
+  experiment_name: "nl_search_test_1"
+
+  # for information about the parameters: https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.ModelCheckpoint.html#lightning.pytorch.callbacks.ModelCheckpoint
+  checkpoints:
+    dirpath: f"development/text_to_sql/storage/{experiment_name}"
+    save_top_k: -1
+    monitor: "val_loss"
+    mode: "min"
+
+  logger:
+    # for information about the parameters of wandb: https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.loggers.wandb.html#module-lightning.pytorch.loggers.wandb
+    name: "wandb"
+    args:
+      # name parameter of wandb is equal to experiment_name
+      project: "nl_search_test"
+      offline: False
+
+  # for information about the parameters: https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.EarlyStopping.html#lightning.pytorch.callbacks.EarlyStopping
+  early_stopping:
+    patience: 3
+    monitor: "val_loss"
+    mode: "min"
